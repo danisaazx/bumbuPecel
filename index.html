@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bumbu Pecel Online</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Selamat Datang di Bumbu Pecel Online</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Tentang Kami</a></li>
+                <li><a href="#">Produk</a></li>
+                <li><a href="#">Kontak</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Bumbu Pecel Khas Jawa</h2>
+            <p>Kami menjual bumbu pecel tradisional dengan rasa autentik yang cocok untuk berbagai hidangan. Pesan sekarang juga!</p>
+        </section>
+
+        <section class="products">
+            <h2>Produk Kami</h2>
+            <div class="product-item">
+                <h3>Bumbu Pecel Klasik</h3>
+                <p>Rp 25.000</p>
+                <button onclick="pesanBumbu('Bumbu Pecel Klasik')">Pesan Sekarang</button>
+            </div>
+            <div class="product-item">
+                <h3>Bumbu Pecel Pedas</h3>
+                <p>Rp 30.000</p>
+                <button onclick="pesanBumbu('Bumbu Pecel Pedas')">Pesan Sekarang</button>
+            </div>
+        </section>
+
+        <section class="order-form">
+            <h2>Formulir Pemesanan</h2>
+            <form id="orderForm">
+                <label for="nama">Nama:</label><br>
+                <input type="text" id="nama" name="nama"><br><br>
+                <label for="alamat">Alamat:</label><br>
+                <input type="text" id="alamat" name="alamat"><br><br>
+                <label for="produk">Produk:</label><br>
+                <input type="text" id="produk" name="produk" readonly><br><br>
+                <label for="jumlah">Jumlah:</label><br>
+                <input type="number" id="jumlah" name="jumlah"><br><br>
+                <button type="button" onclick="submitOrder()">Pesan</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Bumbu Pecel Online. Semua hak dilindungi.</p>
+    </footer>
+
+    <script>
+        function pesanBumbu(produk) {
+            document.getElementById('produk').value = produk;
+            window.scrollTo(0, document.getElementById('orderForm').offsetTop);
+        }
+
+        function submitOrder() {
+            const nama = document.getElementById('nama').value;
+            const alamat = document.getElementById('alamat').value;
+            const produk = document.getElementById('produk').value;
+            const jumlah = document.getElementById('jumlah').value;
+
+            const orderData = {
+                nama: nama,
+                alamat: alamat,
+                produk: produk,
+                jumlah: jumlah
+            };
+
+            fetch('http://localhost:3000/api/order', { // Ganti URL dengan API endpoint sebenarnya
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Pesanan berhasil dikirim! Nomor pesanan: ' + data.orderId);
+            })
+            .catch(error => {
+                alert('Terjadi kesalahan: ' + error.message);
+            });
+        }
+    </script>
+</body>
+</html>
